@@ -12,6 +12,7 @@ ENV KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 
 # Copy the topic creation script
 COPY kafka-topic-create.sh /kafka-topic-create.sh
+COPY produce_events.sh /produce_events.sh
 RUN chmod +x /kafka-topic-create.sh
 
 # Start Kafka and then create topics
@@ -23,7 +24,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements-consumer.txt requirements.txt
+COPY requirements-event-consumer.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY EventConsumer/consumer.py .
@@ -33,7 +34,7 @@ CMD ["python", "consumer.py"]
 FROM python:3.11-slim AS anomaly-consumer
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY requirements-consumer.txt requirements.txt
+COPY requirements-anomaly-consumer.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY AnomalyConsumer/consumer.py .
 CMD ["python", "consumer.py"]
@@ -42,7 +43,7 @@ CMD ["python", "consumer.py"]
 FROM python:3.11-slim AS migration-cli
 WORKDIR /app
 RUN pip install --no-cache-dir psycopg2-binary
-COPY db_migrations ./migrations
+COPY db_migrations/* ./migrations/*
 COPY migrate.py .
 ENTRYPOINT ["python", "migrate.py"]
 
