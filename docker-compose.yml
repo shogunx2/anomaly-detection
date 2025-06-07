@@ -90,5 +90,13 @@ services:
     ports:
       - "8000:8000"
 
+  ml-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ml-service
+    ports:
+      - "8001:8001"
+
 volumes:
   postgres_data:
