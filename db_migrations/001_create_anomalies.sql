@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS anomalies (
+    id BIGINT PRIMARY KEY,
+    source_event TEXT,
+    resource_id TEXT,
+    resource_name TEXT,
+    severity TEXT,
+    timestamp TIME,
+    enterprise_id TEXT,
+    status VARCHAR
+);

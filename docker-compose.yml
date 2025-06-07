@@ -1,0 +1,94 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  event-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: event-consumer
+    container_name: event-consumer
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: events
+  
+  anomaly-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: anomaly-consumer
+    container_name: anomaly-consumer
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_ANOMALY_TOPIC: anomalies
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432" # Expose PostgreSQL port
+    environment:
+      POSTGRES_DB: anomalydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # Set up PostgreSQL database and user
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persist PostgreSQL data
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migration-cli
+    container_name: migrate
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: anomalydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  
+  anomaly-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: anomaly-api
+    container_name: anomaly-api
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: anomalydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
