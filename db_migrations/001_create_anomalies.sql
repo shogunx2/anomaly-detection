@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS anomalies (
     resource_id TEXT,
     resource_name TEXT,
     severity TEXT,
-    timestamp TIME,
+    timestamp timestamp,
     enterprise_id TEXT,
     status VARCHAR
 );
