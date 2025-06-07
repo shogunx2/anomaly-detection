@@ -62,3 +62,20 @@ COPY AnomalyAPIService/main.py .
 EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# ---- ML Service Stage ----
+FROM python:3.11-slim AS ml-service
+ENV PYTHONUNBUFFERED=1
+WORKDIR /app
+
+# Copy and install requirements for ML service
+COPY "MLservice/requirements.txt" requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy ML service code and model artifacts
+COPY "MLservice/" .
+
+# Expose the port your ML service will run on (e.g., 5000)
+EXPOSE 8001
+
+CMD ["python", "service.py"]
