@@ -24,17 +24,17 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements-event-consumer.txt requirements.txt
+COPY EventConsumer/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY EventConsumer/consumer.py .
+COPY EventConsumer/consumer.py consumer.py
 CMD ["python", "consumer.py"]
 
 # ---- Anomaly Consumer Stage ----
 FROM python:3.11-slim AS anomaly-consumer
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY requirements-anomaly-consumer.txt requirements.txt
+COPY AnomalyConsumer/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY AnomalyConsumer/consumer.py .
 CMD ["python", "consumer.py"]
@@ -43,7 +43,7 @@ CMD ["python", "consumer.py"]
 FROM python:3.11-slim AS migration-cli
 WORKDIR /app
 RUN pip install --no-cache-dir psycopg2-binary
-COPY db_migrations/* ./migrations/*
+COPY db_migrations/* ./migrations/
 COPY migrate.py .
 ENTRYPOINT ["python", "migrate.py"]
 
@@ -53,7 +53,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install dependencies
-COPY AnomalyAPIService/requirements-anomaly-api.txt requirements.txt
+COPY AnomalyAPIService/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy API service code
@@ -75,8 +75,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy ML service code and model artifacts
 COPY "MLservice/" .
+COPY "MLmodel/models/" /app/models/
 
-# Expose the port your ML service will run on (e.g., 5000)
+# Expose the port your ML service will run on
 EXPOSE 8001
 
 CMD ["python", "service.py"]

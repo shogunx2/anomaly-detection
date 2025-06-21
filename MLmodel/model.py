@@ -95,7 +95,7 @@ class AutoencoderFlow(FlowSpec):
 
         # Parse timestamp
         df['timestamp'] = pd.to_datetime(df['timestamp'])
-        df['is_working_hour'] = df['timestamp'].dt.hour.apply(lambda h: 'True' if 9 <= h <= 22 else 'False')
+        df['is_working_hour'] = df['timestamp'].dt.hour.apply(lambda h: 'True' if 9 <= h <= 18 else 'False')
         df['is_weekday'] = df['timestamp'].dt.dayofweek.apply(lambda d: 'True' if 0 <= d <= 4 else 'False')
 
         if 'enterprise_id' in df.columns:
@@ -218,12 +218,12 @@ class AutoencoderFlow(FlowSpec):
         y_train = [self.X_train[:,i] for i in range(self.X_train.shape[1])]
         y_val = [self.X_val[:,i] for i in range(self.X_val.shape[1])]
         
-        early_stopping = EarlyStopping(
-            monitor = 'val_loss',
-            patience = 5,
-            restore_best_weights = True,
-            verbose = 1
-        )
+        # early_stopping = EarlyStopping(
+        #     monitor = 'val_loss',
+        #     patience = 5,
+        #     restore_best_weights = True,
+        #     verbose = 1
+        # )
         
         self.history = self.autoencoder.fit(
             X_train_inputs,
@@ -232,7 +232,7 @@ class AutoencoderFlow(FlowSpec):
             batch_size = self.batch_size,
             shuffle = True,
             validation_data = (X_val_inputs, y_val),
-            callbacks = [early_stopping]
+            #callbacks = [early_stopping]
         )
         
         self.next(self.evaluate_model)

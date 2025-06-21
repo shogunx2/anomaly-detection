@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import glob
 
 conn = psycopg2.connect(
     host=os.environ.get('POSTGRES_HOST', 'postgres'),
@@ -10,11 +11,17 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-with open('db_migrations/001_create_anomalies_table.sql', 'r') as f:
-    sql = f.read()
-    cur.execute(sql)
-    conn.commit()
+# Get all migration files and sort them
+migration_files = sorted(glob.glob('db_migrations/*.sql'))
 
-print("Migration applied successfully.")
+for migration_file in migration_files:
+    print(f"Applying migration: {migration_file}")
+    with open(migration_file, 'r') as f:
+        sql = f.read()
+        cur.execute(sql)
+        conn.commit()
+    print(f"Migration {migration_file} applied successfully.")
+
+print("All migrations applied successfully.")
 cur.close()
 conn.close()

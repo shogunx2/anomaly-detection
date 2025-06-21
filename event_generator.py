@@ -35,6 +35,7 @@ Event structure example:
         "os_version": "11.0",
         "device": "MacBook-Pro.local"
     },
+    "id": "event_12345",
     "resource_id": 1,
     "resource_name": "user_1",
     "resource_type": "user",

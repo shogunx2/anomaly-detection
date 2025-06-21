@@ -1,0 +1,28 @@
+{
+  "anomaly_threshold": 3,
+  "num_anomalies": 0,
+  "total_samples": 1000000,
+  "anomaly_percentage": 0.0,
+  "mismatches_per_sample": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

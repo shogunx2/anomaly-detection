@@ -1,6 +1,6 @@
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.4.3
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -9,7 +9,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.4.3
     container_name: kafka
     ports:
       - "9092:9092"
@@ -30,9 +30,11 @@ services:
     container_name: event-consumer
     depends_on:
       - kafka
+      - ml-service
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_TOPIC: events
+      ML_SERVICE_URL: http://ml-service:8001
   
   anomaly-consumer:
     build:
@@ -72,7 +74,6 @@ services:
       POSTGRES_DB: anomalydb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-  
   anomaly-api:
     build:
       context: .

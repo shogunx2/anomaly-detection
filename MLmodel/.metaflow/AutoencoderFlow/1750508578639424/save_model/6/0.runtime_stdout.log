@@ -1,0 +1,3 @@
+[MFLOG|0|2025-06-21T13:20:08.998427Z|runtime|7e78d63d-1d51-43fe-b4ba-3014d7d1b437]Saving model to /Users/ayushnema/Development/anomaly-detection/MLmodel/models/model_20250621_185008
+[MFLOG|0|2025-06-21T13:20:09.083081Z|runtime|04f6a334-ceab-464f-be44-622298bfd900]Model saved to /Users/ayushnema/Development/anomaly-detection/MLmodel/models/model_20250621_185008/autoencoder.h5
+[MFLOG|0|2025-06-21T13:20:09.096019Z|runtime|21f524f4-6fb6-4d33-b842-9701ca01df58]Model and evaluation results saved successfully!

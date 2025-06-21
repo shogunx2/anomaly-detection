@@ -62,11 +62,10 @@ try:
             cur = conn.cursor()
             print("Connected to PostgreSQL database")
             cur.execute("""
-                INSERT INTO anomalies (id, source_event, resource_id, resource_name, severity, timestamp, enterprise_id, status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (id) DO NOTHING
+                INSERT INTO anomalies (source_event, resource_id, resource_name, severity, timestamp, enterprise_id, status)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                RETURNING id
             """, (
-                event_data.get("id"),
                 event_data.get("event_type"),
                 event_data.get("resource_id"),
                 event_data.get("resource_name"),
@@ -75,11 +74,17 @@ try:
                 event_data.get("enterprise_id"),
                 'Open'
             ))
+            # Get the auto-generated id
+            result = cur.fetchone()
+            if result:
+                generated_id = result[0]
+                print(f"Inserted anomaly with auto-generated id {generated_id}")
+            else:
+                print("Failed to get auto-generated id")
             print("Executing insert statement")
             conn.commit()
             cur.close()
             conn.close()
-            print(f"Inserted anomaly with id {event_data.get('id')}")
         except Exception as db_err:
             print(f"Failed to insert into anomalies table: {db_err}")
         

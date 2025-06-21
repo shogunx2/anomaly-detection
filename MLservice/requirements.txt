@@ -2,3 +2,7 @@ flask
 tensorflow
 scikit-learn
 joblib
+requests
+pandas
+geohash2
+flask
