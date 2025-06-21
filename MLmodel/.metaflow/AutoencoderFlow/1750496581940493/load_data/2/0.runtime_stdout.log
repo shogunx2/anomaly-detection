@@ -1,0 +1,3 @@
+[MFLOG|0|2025-06-21T09:03:06.413075Z|runtime|18c4c3d8-c539-4434-875f-24876bd40136]Loading data from /Users/ayushnema/Development/anomaly-detection/data/events.csv...
+[MFLOG|0|2025-06-21T09:03:06.427815Z|runtime|25d5f16f-e83a-4e86-b80b-255af0518c5a]Loaded data with shape: (1000, 6)
+[MFLOG|0|2025-06-21T09:03:06.668187Z|runtime|1de3ade4-81e9-4601-adfc-2241df52344e]Data columns: ['username', 'geohash', 'success', 'resource_id', 'is_working_hour', 'is_weekday']

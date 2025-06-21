@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "event_type": { "type": "string", "description": "Type of the event (e.g., user_login_event)" },
+    "geoip": {
+      "type": "object",
+      "properties": {
+        "country_code": { "type": "string" },
+        "continent_code": { "type": "string" },
+        "region_name": { "type": "string" },
+        "region_code": { "type": "string" },
+        "timezone": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" }
+      },
+      "required": [
+        "country_code",
+        "continent_code",
+        "region_name",
+        "region_code",
+        "timezone",
+        "latitude",
+        "longitude"
+      ]
+    },
+    "client_ip": { "type": "string", "description": "Client IP address" },
+    "user_agent": {
+      "type": "object",
+      "properties": {
+        "browser": { "type": "string" },
+        "browser_version": { "type": "string" },
+        "os": { "type": "string" },
+        "os_version": { "type": "string" },
+        "device": { "type": "string" }
+      },
+      "required": [
+        "browser",
+        "browser_version",
+        "os",
+        "os_version",
+        "device"
+      ]
+    },
+    "resource_id": { "type": "integer" },
+    "resource_name": { "type": "string" },
+    "resource_type": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "enterprise_id": { "type": "string" },
+    "success": { "type": "boolean" }
+  },
+  "required": [
+    "event_type",
+    "geoip",
+    "client_ip",
+    "user_agent",
+    "resource_id",
+    "resource_name",
+    "resource_type",
+    "timestamp",
+    "enterprise_id",
+    "success"
+  ]
+}

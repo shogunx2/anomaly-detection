@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-'''''
+'''
 This script generates a sequence of events based on the provided configuration.
 It reads the configuration from a file, generates events according to the specified parameters,
 and writes the events to an output file.
@@ -22,13 +22,13 @@ Event structure example:
         "country_code": "IN",
         "continent_code": "AS",
         "region_name": "New Delhi",
-        "region_code": "ND",
+        "region_code": "IN",
         "timezone": "Asia/Kolkata",
         "latitude": 28.6139,
         "longitude": 77.2090,
     },
     "client_ip": "103.27.8.123",
-    "useragent": {
+    "user_agent": {
         "browser": "Safari",
         "browser_version": "14.0",
         "os": "MacOS",
@@ -199,8 +199,8 @@ def generate_event(event_type: str,
     client_ip = generate_random_ip(ip_range)
     # Use a random system name from the region's systems
     system_name = random.choice(region_data["systems"])
-    useragent = random.choice(USERAGENT.get(system_name, USERAGENT["MacBook-Pro.local"]))
-    useragent["device"] = system_name
+    user_agent = random.choice(USERAGENT.get(system_name, USERAGENT["MacBook-Pro.local"])).copy()  # Copy to avoid mutating the original
+    user_agent["device"] = system_name
     
     return {
         "event_type": event_type,
@@ -214,7 +214,7 @@ def generate_event(event_type: str,
             "longitude": longitude,
         },
         "client_ip": client_ip,
-        "useragent": useragent,
+        "user_agent": user_agent,
         "resource_id": resource_id,
         "resource_name": resource_name,
         "resource_type": resource_type,
@@ -235,8 +235,8 @@ def main():
     # Parse command line arguments
     print("Generating events for anomaly detection")
     parser = argparse.ArgumentParser(description= 'Generate events for anomaly detection' )
-    parser.add_argument('-n', '--num_events', type=int, default=1000, help='Number of events to generate(per user)')
-    parser.add_argument('-m', '--num_users', type=int, default=100, help='Number of users')
+    parser.add_argument('-n', '--num_events', type=int, default=100, help='Number of events to generate(per user)')
+    parser.add_argument('-m', '--num_users', type=int, default=10, help='Number of users')
     parser.add_argument('-o', '--output_file', type=str, default='data/events.csv', help='out file name')
     parser.add_argument('--success-rate', type=float, default=0.85, help='Success rate for login attempts (0.0-1.0)')
     parser.add_argument('--start-date', type=str, default=None, help='Start date for events in YYYY-MM-DD format, defaults to today')
@@ -302,7 +302,7 @@ def main():
             # Serialize geoip and useragent as JSON strings
             event = event.copy()  # Avoid mutating the original event
             event["geoip"] = json.dumps(event["geoip"])
-            event["useragent"] = json.dumps(event["useragent"])
+            event["user_agent"] = json.dumps(event["user_agent"])
             writer.writerow(event)
 
 if __name__ == "__main__":

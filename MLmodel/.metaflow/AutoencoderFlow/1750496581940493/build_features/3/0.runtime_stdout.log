@@ -1,0 +1,10 @@
+[MFLOG|0|2025-06-21T09:03:08.866953Z|runtime|65050b7f-5501-4004-9467-2f61b60a591f]Building features...
+[MFLOG|0|2025-06-21T09:03:08.867900Z|runtime|0f851964-eb8a-42f7-9832-c74e83af017e]Label encoder for 'username' includes UNKNOWN token at index 10
+[MFLOG|0|2025-06-21T09:03:08.868369Z|runtime|cfa629dc-1839-4e68-821c-3d9ed07405ce]Label encoder for 'geohash' includes UNKNOWN token at index 0
+[MFLOG|0|2025-06-21T09:03:08.868784Z|runtime|c59c3851-0dca-43fd-aac4-580cbfb46d62]Label encoder for 'success' includes UNKNOWN token at index 2
+[MFLOG|0|2025-06-21T09:03:08.869188Z|runtime|6ea18076-03f0-4d7d-89f5-2482545d7b0b]Label encoder for 'resource_id' includes UNKNOWN token at index 10
+[MFLOG|0|2025-06-21T09:03:08.869578Z|runtime|7daba21b-0604-47b2-86a0-145c41b8b550]Label encoder for 'is_working_hour' includes UNKNOWN token at index 1
+[MFLOG|0|2025-06-21T09:03:08.869970Z|runtime|5721ea3f-a616-4c07-a4d2-34105e06f7b5]Label encoder for 'is_weekday' includes UNKNOWN token at index 2
+[MFLOG|0|2025-06-21T09:03:08.869996Z|runtime|e2281598-f5d3-4a88-aeda-1621dfe8027a]Vocabulary sizes: {'username': 11, 'geohash': 28, 'success': 3, 'resource_id': 11, 'is_working_hour': 2, 'is_weekday': 3}
+[MFLOG|0|2025-06-21T09:03:08.871110Z|runtime|84249c1b-7f13-4915-814b-e8ee8ea70f0a]Train set: 800 samples
+[MFLOG|0|2025-06-21T09:03:09.073064Z|runtime|86f78f49-e3b3-451c-86db-02a0604b69e2]Validation split: 200 samples
