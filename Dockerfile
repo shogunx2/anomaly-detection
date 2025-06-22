@@ -43,9 +43,11 @@ CMD ["python", "consumer.py"]
 FROM python:3.11-slim AS migration-cli
 WORKDIR /app
 RUN pip install --no-cache-dir psycopg2-binary
-COPY db_migrations/* ./migrations/
-COPY migrate.py .
-ENTRYPOINT ["python", "migrate.py"]
+
+COPY db_migrations/ /app/db_migrations/
+COPY migrate.py /app/
+
+CMD ["python", "migrate.py"]
 
 # ---- Anomaly API Stage ----
 FROM python:3.11-slim AS anomaly-api

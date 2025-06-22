@@ -61,7 +61,7 @@ def feature_engineering(event: Dict[str, Any],features: list) -> pd.DataFrame:
             day_of_week = ts.dayofweek
             # Use same working hours as model.py (9-22)
             if 'is_working_hour' in features:
-                row['is_working_hour'] = 'True' if 9 <= hour <= 22 else 'False'
+                row['is_working_hour'] = 'True' if 9 <= hour <= 18 else 'False'
             if 'is_weekday' in features:
                 row['is_weekday'] = 'True' if day_of_week < 5 else 'False'
         except Exception as e:
@@ -87,7 +87,7 @@ class AutoencoderInference:
         self.label_encoders = preprocessors['label_encoders']
         self.vocab_sizes = preprocessors['vocab_sizes']
         self.embedding_dim = preprocessors['embedding_dim']
-        self.anomaly_threshold = preprocessors.get('anomaly_threshold', None)
+        self.anomaly_threshold = 2
         self.categorical_features = preprocessors['categorical_features']
 
     def preprocess_event(self,event: Dict[str, Any]) -> np.ndarray:
@@ -145,7 +145,7 @@ class AutoencoderInference:
         if n_mismatches == 1 and mismatched_cols == ['success']:
             is_anomaly = False
         else:
-            is_anomaly = n_mismatches > threshold
+            is_anomaly = n_mismatches >= threshold
 
         return {
             'original_event': original_event,

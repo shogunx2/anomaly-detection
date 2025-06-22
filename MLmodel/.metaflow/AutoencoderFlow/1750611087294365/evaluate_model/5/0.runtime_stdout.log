@@ -1,0 +1,4 @@
+[MFLOG|0|2025-06-22T16:51:42.095606Z|runtime|c85801e3-1974-4ee5-b1cc-d6e58f99c178]Evaluating model and determining anomaly threshold...
+[MFLOG|0|2025-06-22T16:51:42.265251Z|runtime|435f7449-23e5-47cc-a566-c6eb552229b0][1m 1/32[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m1s[0m 40ms/step[1m32/32[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 2ms/step 
+[MFLOG|0|2025-06-22T16:51:42.280942Z|runtime|da01bad2-9ded-4e43-93d7-1641b1de0d32]Number of mismatches per sample(first 10): [0 0 0 0 0 0 0 0 0 0]
+[MFLOG|0|2025-06-22T16:51:42.280996Z|runtime|58978a5d-c8de-43bd-916e-b02fa22b35a3]Number of potential anomalies found: 0 out of 1000

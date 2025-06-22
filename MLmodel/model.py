@@ -93,7 +93,6 @@ class AutoencoderFlow(FlowSpec):
         else:
             df['geohash'] = None
 
-        # Parse timestamp
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df['is_working_hour'] = df['timestamp'].dt.hour.apply(lambda h: 'True' if 9 <= h <= 18 else 'False')
         df['is_weekday'] = df['timestamp'].dt.dayofweek.apply(lambda d: 'True' if 0 <= d <= 4 else 'False')
@@ -101,14 +100,12 @@ class AutoencoderFlow(FlowSpec):
         if 'enterprise_id' in df.columns:
             df['enterprise_id'] = df['enterprise_id'].astype(str)
 
-        # Standardize 'success' column to string 'True'/'False'
         if 'success' in df.columns:
             df['success'] = df['success'].apply(
                 lambda v: 'True' if v is True or (isinstance(v, str) and v.lower() == 'true')
                 else ('False' if v is False or (isinstance(v, str) and v.lower() == 'false') else 'UNKNOWN')
             )
 
-        # Drop columns not needed
         drop_cols = [
             'client_ip', 'country_code', 'latitude', 'longitude', 'hour', 'day_of_week', 'working_hour',
             'useragent', 'geoip', 'resource_name', 'resource_type', 'event_type'
@@ -218,12 +215,12 @@ class AutoencoderFlow(FlowSpec):
         y_train = [self.X_train[:,i] for i in range(self.X_train.shape[1])]
         y_val = [self.X_val[:,i] for i in range(self.X_val.shape[1])]
         
-        # early_stopping = EarlyStopping(
-        #     monitor = 'val_loss',
-        #     patience = 5,
-        #     restore_best_weights = True,
-        #     verbose = 1
-        # )
+        early_stopping = EarlyStopping(
+            monitor = 'val_loss',
+            patience = 5,
+            restore_best_weights = True,
+            verbose = 1
+        )
         
         self.history = self.autoencoder.fit(
             X_train_inputs,
@@ -232,7 +229,7 @@ class AutoencoderFlow(FlowSpec):
             batch_size = self.batch_size,
             shuffle = True,
             validation_data = (X_val_inputs, y_val),
-            #callbacks = [early_stopping]
+            callbacks = [early_stopping]
         )
         
         self.next(self.evaluate_model)
@@ -259,7 +256,7 @@ class AutoencoderFlow(FlowSpec):
             
         print(f"Number of mismatches per sample(first 10): {n_mismatches[:10]}")
         
-        self.anomaly_threshold = 3
+        self.anomaly_threshold = 1
         anomalies = n_mismatches > self.anomaly_threshold
         
         print(f"Number of potential anomalies found: {np.sum(anomalies)} out of {len(n_mismatches)}")

@@ -1,0 +1,40 @@
+[MFLOG|0|2025-06-22T16:47:34.712347Z|runtime|b5dc3737-5e46-49a1-afdb-1fbf8d130cfd]<flow AutoencoderFlow step load_data> failed:
+[MFLOG|0|2025-06-22T16:47:34.715499Z|runtime|9347ddaa-e3d8-40f6-bda7-b67bf52cc7ee]    Internal error
+[MFLOG|0|2025-06-22T16:47:34.724103Z|runtime|a9e3e528-a768-462a-b2f1-df351c392832]Traceback (most recent call last):
+[MFLOG|0|2025-06-22T16:47:34.724137Z|runtime|70edae87-17f5-4c42-ae2f-f2dc1e09841f]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/cli.py", line 631, in main
+[MFLOG|0|2025-06-22T16:47:34.724163Z|runtime|6a13520b-bcc9-42cc-8dae-a86ee4d084f8]    start(auto_envvar_prefix="METAFLOW", obj=state)
+[MFLOG|0|2025-06-22T16:47:34.724190Z|runtime|a2560b65-ac01-4905-8faa-82e4738f0e98]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/_vendor/click/core.py", line 829, in __call__
+[MFLOG|0|2025-06-22T16:47:34.724232Z|runtime|60251773-86b5-4a48-b6b7-529eeff17207]    return self.main(args, kwargs)
+[MFLOG|0|2025-06-22T16:47:34.918492Z|runtime|c254f7c4-27e8-4e0b-a54b-596d60d012b5]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/_vendor/click/core.py", line 782, in main
+[MFLOG|0|2025-06-22T16:47:34.918659Z|runtime|b461127d-b0b7-44b6-b216-717fed0e280c]    rv = self.invoke(ctx)
+[MFLOG|0|2025-06-22T16:47:34.918699Z|runtime|c2cf752d-079b-4126-a8f7-fab982616f73]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/cli_components/utils.py", line 69, in invoke
+[MFLOG|0|2025-06-22T16:47:34.918729Z|runtime|59d487d2-dedc-4f1d-ac20-ce65a0580308]    return _process_result(sub_ctx.command.invoke(sub_ctx))
+[MFLOG|0|2025-06-22T16:47:34.918756Z|runtime|ab0260fe-f651-4bb4-891c-35678ef86386]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/_vendor/click/core.py", line 1066, in invoke
+[MFLOG|0|2025-06-22T16:47:34.918783Z|runtime|364728a5-248c-4521-a02b-6f5877a721f0]    return ctx.invoke(self.callback, ctx.params)
+[MFLOG|0|2025-06-22T16:47:34.918806Z|runtime|1dc90c87-7d5d-493c-bd78-c7e4c77fb6dc]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/_vendor/click/core.py", line 610, in invoke
+[MFLOG|0|2025-06-22T16:47:34.918830Z|runtime|e23fc147-26f0-406a-83bd-00f899f036ca]    return callback(args, kwargs)
+[MFLOG|0|2025-06-22T16:47:34.918851Z|runtime|729b6128-40cc-4498-89f2-ac76ed7aad39]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/tracing/__init__.py", line 27, in wrapper_func
+[MFLOG|0|2025-06-22T16:47:34.918875Z|runtime|00611b0f-6be1-4c8b-aefe-9d8e0d63f118]    return func(args, kwargs)
+[MFLOG|0|2025-06-22T16:47:34.918898Z|runtime|4ef71ea7-16ca-4954-aec4-b27dca751d2e]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/_vendor/click/decorators.py", line 21, in new_func
+[MFLOG|0|2025-06-22T16:47:34.918919Z|runtime|d3939b93-5242-4cc3-9a98-4041f19d7e16]    return f(get_current_context(), args, kwargs)
+[MFLOG|0|2025-06-22T16:47:34.918942Z|runtime|fb560bee-e62c-4b5c-b94f-79be631574f6]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/cli_components/step_cmd.py", line 167, in step
+[MFLOG|0|2025-06-22T16:47:34.918966Z|runtime|584aaa8a-69fe-4dbc-b723-48e60b7fcc68]    task.run_step(
+[MFLOG|0|2025-06-22T16:47:34.918990Z|runtime|f8a5bff6-8376-4627-b399-1be69d4ac27d]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/task.py", line 672, in run_step
+[MFLOG|0|2025-06-22T16:47:34.919015Z|runtime|8f56411b-d647-48d5-bdce-0607a802307b]    self._exec_step_function(step_func)
+[MFLOG|0|2025-06-22T16:47:34.919038Z|runtime|c670b606-fcd6-4cef-a3aa-c538aa07034e]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/metaflow/task.py", line 62, in _exec_step_function
+[MFLOG|0|2025-06-22T16:47:34.919062Z|runtime|866061de-4b43-4f77-8876-c61de93f7de5]    step_function()
+[MFLOG|0|2025-06-22T16:47:34.919084Z|runtime|e224de7b-a0e3-4c9a-9a0a-b881c29ef46c]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/model.py", line 73, in load_data
+[MFLOG|0|2025-06-22T16:47:34.919110Z|runtime|b7207148-16d5-4306-a7d5-51929198bd81]    df = pd.read_csv(self.data_path)
+[MFLOG|0|2025-06-22T16:47:34.919134Z|runtime|4927968d-e77d-4901-83b3-0551489b44f2]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+[MFLOG|0|2025-06-22T16:47:34.919158Z|runtime|0a2abee1-9a0a-4835-94bb-2fc9420edbcc]    return _read(filepath_or_buffer, kwds)
+[MFLOG|0|2025-06-22T16:47:34.919182Z|runtime|5d2938ba-b772-4089-8d7f-f0cba6783110]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+[MFLOG|0|2025-06-22T16:47:34.919205Z|runtime|a4c6ec11-8fe5-4fa0-ad94-2af1b0943bbf]    parser = TextFileReader(filepath_or_buffer, kwds)
+[MFLOG|0|2025-06-22T16:47:34.919228Z|runtime|1d01e134-202e-4559-9d80-68f6f19801e0]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+[MFLOG|0|2025-06-22T16:47:34.919250Z|runtime|0560dbbc-0a5b-4907-8040-3f171f450209]    self._engine = self._make_engine(f, self.engine)
+[MFLOG|0|2025-06-22T16:47:34.919274Z|runtime|f23f7070-77b8-4e88-9d7c-f220fe315d59]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+[MFLOG|0|2025-06-22T16:47:34.919298Z|runtime|b2e285b4-23fd-474b-a6ed-d138fb0fc142]    self.handles = get_handle(
+[MFLOG|0|2025-06-22T16:47:34.919322Z|runtime|826f86ce-bfb3-4433-b2c7-988645943491]  File "/Users/ayushnema/Development/anomaly-detection/MLmodel/venv/lib/python3.9/site-packages/pandas/io/common.py", line 873, in get_handle
+[MFLOG|0|2025-06-22T16:47:34.919343Z|runtime|b8982a36-8351-49df-a610-bf44d1304fb7]    handle = open(
+[MFLOG|0|2025-06-22T16:47:34.919365Z|runtime|b705ecce-cee6-490c-a649-097a45dc5341]FileNotFoundError: [Errno 2] No such file or directory: 'data/events_with_anomalies1.csv'
+[MFLOG|0|2025-06-22T16:47:34.919389Z|runtime|ae11f6d9-60cd-4cc0-978c-08ab9d36a8ae]
+[MFLOG|0|2025-06-22T16:47:34.919693Z|runtime|db257e8c-e5f6-4b55-b9cf-1eae4f868682]Task failed.
