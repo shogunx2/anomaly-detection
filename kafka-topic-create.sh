@@ -20,3 +20,6 @@ else
     echo "Error: One or both topics were not created."
     exit 1
 fi
+
+#create a producer to test the 'events' topic
+kafka-console-producer --broker-list localhost:9092 --topic events
