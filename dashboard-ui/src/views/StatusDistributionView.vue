@@ -31,7 +31,7 @@
           :data="statusDistributionData"
           title="Status Distribution"
           subtitle="Distribution of anomaly statuses"
-          :colors="statusColors"
+          :colors="statusColorsForChart"
         />
 
         <!-- Severity Distribution -->
@@ -39,7 +39,7 @@
           :data="severityDistributionData"
           title="Severity Distribution"
           subtitle="Distribution of anomaly severities"
-          :colors="severityColors"
+          :colors="severityColorsForChart"
         />
       </div>
     </div>
@@ -60,22 +60,84 @@ const { loading, error, overview, distributions } = storeToRefs(dashboardStore)
 const statusColors = ['#ef4444', '#f97316', '#22c55e', '#3b82f6']
 const severityColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899']
 
+// Map status labels to their correct colors
+const getStatusColor = (status: string): string => {
+  const colorMap: { [key: string]: string } = {
+    'Open': '#ef4444',      // red
+    'Acknowledged': '#f97316', // orange
+    'Resolved': '#22c55e'   // green
+  }
+  return colorMap[status] || '#9ca3af'
+}
+
+// Map severity labels to their correct colors
+const getSeverityColor = (severity: string): string => {
+  const colorMap: { [key: string]: string } = {
+    'High': '#ef4444',      // red
+    'Medium': '#f97316',    // orange
+    'Low': '#22c55e'        // green
+  }
+  return colorMap[severity] || '#9ca3af'
+}
+
 const statusDistributionData = computed(() => {
   if (!distributions.value?.status_distribution) return []
   
-  return Object.entries(distributions.value.status_distribution).map(([label, value]) => ({
+  // Define consistent order for status
+  const statusOrder = ['Open', 'Acknowledged', 'Resolved']
+  const data = Object.entries(distributions.value.status_distribution).map(([label, value]) => ({
     label,
     value: value as number
   }))
+  
+  // Sort by the defined order
+  return data.sort((a, b) => {
+    const indexA = statusOrder.indexOf(a.label)
+    const indexB = statusOrder.indexOf(b.label)
+    return indexA - indexB
+  })
+})
+
+const statusColorsForChart = computed(() => {
+  // Map colors based on the actual label, not array position
+  return statusDistributionData.value.map(item => {
+    const colorMap: { [key: string]: string } = {
+      'Open': '#ef4444',      // red
+      'Acknowledged': '#f97316', // orange
+      'Resolved': '#22c55e'   // green
+    }
+    return colorMap[item.label] || '#9ca3af'
+  })
 })
 
 const severityDistributionData = computed(() => {
   if (!overview.value?.severity_distribution) return []
   
-  return Object.entries(overview.value.severity_distribution).map(([label, value]) => ({
+  // Define consistent order for severity
+  const severityOrder = ['High', 'Medium', 'Low']
+  const data = Object.entries(overview.value.severity_distribution).map(([label, value]) => ({
     label,
     value: value as number
   }))
+  
+  // Sort by the defined order
+  return data.sort((a, b) => {
+    const indexA = severityOrder.indexOf(a.label)
+    const indexB = severityOrder.indexOf(b.label)
+    return indexA - indexB
+  })
+})
+
+const severityColorsForChart = computed(() => {
+  // Map colors based on the actual label, not array position
+  return severityDistributionData.value.map(item => {
+    const colorMap: { [key: string]: string } = {
+      'High': '#ef4444',      // red
+      'Medium': '#f97316',    // orange
+      'Low': '#22c55e'        // green
+    }
+    return colorMap[item.label] || '#9ca3af'
+  })
 })
 
 const refreshData = async () => {

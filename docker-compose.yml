@@ -57,8 +57,9 @@ services:
       POSTGRES_DB: anomalydb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres # Set up PostgreSQL database and user
+      PGDATA: /data
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persist PostgreSQL data
+      - postgres_data:/data # Persist PostgreSQL data (mount to /data and set PGDATA)
 
   migrate:
     build:

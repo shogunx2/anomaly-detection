@@ -7,8 +7,7 @@
     
     <div class="h-56 relative">
         <canvas ref="chartRef"></canvas>
-    
-        <div v-if="!props.data || props.data.length === 0" class="absolute inset-0 flex items-center justify-center text-slate-400">
+        <div v-if="!props.data || props.data.length === 0" class="absolute inset-0 flex items-center justify-center text-slate-400 pointer-events-none">
           No timeline data
         </div>
       </div>

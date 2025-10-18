@@ -7,10 +7,10 @@
     
     <div class="h-56 relative">
       <canvas ref="chartRef"></canvas>
-    </div>
-      <div v-if="!props.data || props.data.length === 0" class="absolute inset-0 flex items-center justify-center text-slate-400">
+      <div v-if="!props.data || props.data.length === 0" class="absolute inset-0 flex items-center justify-center text-slate-400 pointer-events-none">
         No distribution data
       </div>
+    </div>
     
     <!-- Legend -->
     <div v-if="showLegend" class="mt-3 flex flex-wrap gap-3 justify-center">
@@ -65,16 +65,41 @@ const props = withDefaults(defineProps<Props>(), {
 const chartRef = ref<HTMLCanvasElement>()
 let chart: Chart | null = null
 
+// Map colors based on label content (for status/severity charts)
+const getColorForLabel = (label: string): string => {
+  // Status color mapping
+  const statusMap: { [key: string]: string } = {
+    'Open': '#ef4444',      // red
+    'Acknowledged': '#f97316', // orange
+    'Resolved': '#22c55e'   // green
+  }
+  
+  // Severity color mapping
+  const severityMap: { [key: string]: string } = {
+    'High': '#ef4444',      // red
+    'Medium': '#f97316',    // orange
+    'Low': '#22c55e'        // green
+  }
+  
+  // Try status first, then severity, then use provided colors
+  return statusMap[label] || severityMap[label] || '#9ca3af'
+}
+
 const legendItems = computed(() => {
   return props.data.map((item, index) => ({
     label: item.label,
     value: item.value,
-    color: props.colors[index % props.colors.length]
+    color: getColorForLabel(item.label) || props.colors[index % props.colors.length]
   }))
 })
 
 const createChart = () => {
-  console.debug('[DonutChart.createChart] Starting chart creation')
+  console.debug('[DonutChart.createChart] Starting chart creation with props:', {
+    dataLength: props.data?.length,
+    colorsLength: props.colors?.length,
+    colors: props.colors,
+    labels: props.data?.map(d => d.label)
+  })
   if (!chartRef.value) {
     console.warn('[DonutChart.createChart] chartRef.value is null, returning early')
     return
@@ -102,7 +127,7 @@ const createChart = () => {
         datasets: (props.data && props.data.length) ? [
           {
             data: props.data.map(d => d.value),
-            backgroundColor: props.data.map((_, index) => props.colors[index % props.colors.length]),
+            backgroundColor: props.data.map(d => getColorForLabel(d.label)),
             borderColor: '#1f2937',
             borderWidth: 2
           }
@@ -170,7 +195,7 @@ const updateChart = () => {
     chart.data.labels = props.data.map(d => d.label)
 
     const newData = props.data.map(d => d.value)
-    const newBg = props.data.map((_, index) => props.colors[index % props.colors.length])
+    const newBg = props.data.map(d => getColorForLabel(d.label))
 
     if (!ds || !ds[0]) {
       console.debug('[DonutChart.updateChart] Creating new dataset (no existing dataset found)')

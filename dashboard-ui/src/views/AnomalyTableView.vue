@@ -69,8 +69,8 @@
       <button @click="loadAnomalies" class="btn-primary mt-4">Retry</button>
     </div>
 
-    <!-- Table -->
-    <div v-else class="card overflow-hidden overflow-x-auto">
+  <!-- Table -->
+  <div v-else class="card overflow-x-auto">
       <div class="min-w-max">
         <table class="w-full text-sm">
           <thead>
@@ -114,7 +114,7 @@
                 </span>
               </td>
               <td class="px-3 py-2 whitespace-nowrap">
-                <div class="relative inline-block">
+                <div class="relative inline-block" :ref="el => setStatusButtonRef(anomaly.id, el)">
                   <button
                     @click="toggleStatusDropdown(anomaly.id)"
                     class="badge"
@@ -122,11 +122,14 @@
                   >
                     {{ anomaly.status }} ▼
                   </button>
-                  
-                  <!-- Status Dropdown Menu -->
+                </div>
+                
+                <!-- Status Dropdown Menu (teleported to body) -->
+                <Teleport to="body">
                   <div 
                     v-if="openStatusDropdown === anomaly.id"
-                    class="absolute z-50 mt-2 w-40 bg-slate-900 border border-slate-700 rounded-lg shadow-lg"
+                    class="fixed z-50 bg-slate-900 border border-slate-700 rounded-lg shadow-lg"
+                    :style="getDropdownPosition(anomaly.id)"
                   >
                     <button 
                       v-for="status in ['Open', 'Acknowledged', 'Resolved']"
@@ -142,7 +145,7 @@
                       <div v-else>{{ status }}</div>
                     </button>
                   </div>
-                </div>
+                </Teleport>
               </td>
               <td class="px-3 py-2 text-slate-400 whitespace-nowrap">
                 {{ formatTimestamp(anomaly.timestamp) }}
@@ -200,6 +203,8 @@ const isSearching = ref(false)
 const openStatusDropdown = ref<number | null>(null)
 const updatingStatusId = ref<number | null>(null)
 const updateStatusTarget = ref<string | null>(null)
+const statusButtonRefs = ref<Map<number, HTMLElement>>(new Map())
+const dropdownPositions = ref<Map<number, { top: string; left: string; width: string }>>(new Map())
 
 const filters = ref({
   status: '',
@@ -238,6 +243,32 @@ const getStatusClass = (status: string) => {
 
 const formatTimestamp = (timestamp: string) => {
   return new Date(timestamp).toLocaleString()
+}
+
+const setStatusButtonRef = (id: number, el: any) => {
+  if (el) {
+    statusButtonRefs.value.set(id, el as HTMLElement)
+  }
+}
+
+const getDropdownPosition = (id: number) => {
+  const buttonEl = statusButtonRefs.value.get(id)
+  if (!buttonEl) return { top: '0px', left: '0px', width: '160px' }
+  
+  const rect = buttonEl.getBoundingClientRect()
+  const top = rect.bottom + window.scrollY + 8 // 8px below button
+  const left = rect.left + window.scrollX
+  const width = Math.max(160, rect.width * 2) // min 160px, up to 2x button width
+  
+  return {
+    top: `${top}px`,
+    left: `${left}px`,
+    width: `${width}px`
+  }
+}
+
+const closeStatusDropdown = () => {
+  openStatusDropdown.value = null
 }
 
 const loadAnomalies = async () => {
@@ -327,5 +358,15 @@ const debouncedSearch = () => {
 onMounted(() => {
   console.log('AnomalyTableView mounted, loading anomalies...')
   loadAnomalies()
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e: MouseEvent) => {
+    const target = e.target as HTMLElement
+    const isButton = target.closest('[class*="badge"]')
+    const isDropdown = target.closest('[class*="bg-slate-900"]')
+    if (!isButton && !isDropdown) {
+      closeStatusDropdown()
+    }
+  })
 })
 </script>
